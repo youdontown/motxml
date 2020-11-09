@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as MD
+from decimal import *
 
 class MOT:
     def __init__(self):
@@ -53,8 +54,8 @@ def loadMotXML(path):
     root = tree.getroot()
 
     mot = MOT()
-    mot.PlaySpeed = float(root.attrib['PlaySpeed'])
-    mot.EndTime = float(root.attrib['EndTime'])
+    mot.PlaySpeed = Decimal(root.attrib['PlaySpeed'])
+    mot.EndTime = Decimal(root.attrib['EndTime'])
 
     for joint in root.findall('./Joint'):
         j = Joint()
@@ -73,21 +74,21 @@ def loadMotXML(path):
             j.TrackFlag = j.TrackFlag | MOT_FLAGS.DISABLED
 
         j.BoneID = int(joint.attrib['BoneID'])
-        j.MaxTime = float(joint.attrib['MaxTime'])
+        j.MaxTime = Decimal(joint.attrib['MaxTime'])
         j.Unknown = int(joint.attrib['Unknown'])
         mot.Joints.append(j)
 
     for key in root.findall('./Key'):
         k = Key()
-        k.Time = float(key.attrib['Time'])
+        k.Time = Decimal(key.attrib['Time'])
 
         for joint in key.findall('./Joint'):
             jk = JointKey()
-            jk.Time = float(key.attrib['Time'])
-            jk.X = float(joint.attrib['X'])
-            jk.Y = float(joint.attrib['Y'])
-            jk.Z = float(joint.attrib['Z'])
-            jk.W = float(joint.attrib['W'])
+            jk.Time = k.Time
+            jk.X = Decimal(joint.attrib['X'])
+            jk.Y = Decimal(joint.attrib['Y'])
+            jk.Z = Decimal(joint.attrib['Z'])
+            jk.W = Decimal(joint.attrib['W'])
             jointIdx = int(joint.attrib['Index'])
 
             jk.Joint = mot.Joints[jointIdx]
